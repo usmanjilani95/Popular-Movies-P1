@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     JazzyRecyclerViewScrollListener jazzyScrollListener;
     @Bind(R.id.tapBarMenu)
     TapBarMenu tapBarMenu;
-    String API_KEY;
+    String API_KEY,Sorttop_rated;
     Button top_rated,pop;
 
 
@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         API_KEY=getString(R.string.API_KEY);
+        Sorttop_rated=getString(R.string.Sorttop_rated);
         setContentView(R.layout.activity_main);
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         top_rated= (Button) findViewById(R.id.item1);
@@ -68,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
             mLayoutManager = new GridLayoutManager(getApplicationContext(), 3);
             mRecyclerView.setLayoutManager(mLayoutManager);
             ButterKnife.bind(this);
-            String url = "https://api.themoviedb.org/3/movie/top_rated?api_key="+API_KEY;
+            String url = "https://api.themoviedb.org/3"+Sorttop_rated+"?api_key="+API_KEY;
 
 
             JsonObjectRequest jsonRequest = new JsonObjectRequest
@@ -117,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onLoadMore(int current_page) {
                     // do something...
-                    String url = "https://api.themoviedb.org/3/movie/top_rated?page="+current_page+"&&api_key="+API_KEY;
+                    String url = "https://api.themoviedb.org/3"+Sorttop_rated+"?page="+current_page+"&&api_key="+API_KEY;
 
 
                     JsonObjectRequest jsonRequest = new JsonObjectRequest
@@ -195,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
         else if(getResources().getConfiguration().orientation == 1) {
             mLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
             mRecyclerView.setLayoutManager(mLayoutManager);
-            String url = "https://api.themoviedb.org/3/movie/top_rated?api_key="+API_KEY;
+            String url = "https://api.themoviedb.org/3"+Sorttop_rated+"?api_key="+API_KEY;
             ButterKnife.bind(this);
 
             JsonObjectRequest jsonRequest = new JsonObjectRequest
@@ -244,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onLoadMore(int current_page) {
                     // do something...
-                    String url = "https://api.themoviedb.org/3/movie/top_rated?page="+current_page+"&&api_key="+API_KEY;
+                    String url = "https://api.themoviedb.org/3"+Sorttop_rated+"?page="+current_page+"&&api_key="+API_KEY;
 
 
                     JsonObjectRequest jsonRequest = new JsonObjectRequest

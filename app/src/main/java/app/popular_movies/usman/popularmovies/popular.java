@@ -54,7 +54,7 @@ public class popular  extends AppCompatActivity {
     JazzyRecyclerViewScrollListener jazzyScrollListener;
     @Bind(R.id.tapBarMenu)
     TapBarMenu tapBarMenu;
-    String API_KEY;
+    String API_KEY,Sortpopular;
     Button top_rated,pop;
 
 
@@ -64,6 +64,7 @@ public class popular  extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         API_KEY=getString(R.string.API_KEY);
+        Sortpopular=getString(R.string.Sortpopular);
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         top_rated= (Button) findViewById(R.id.item1);
         pop= (Button) findViewById(R.id.item4);
@@ -72,7 +73,7 @@ public class popular  extends AppCompatActivity {
         if(getResources().getConfiguration().orientation== 2) {
             mLayoutManager = new GridLayoutManager(getApplicationContext(), 3);
             mRecyclerView.setLayoutManager(mLayoutManager);
-            String url = "https://api.themoviedb.org/3/movie/popular?api_key="+API_KEY;
+            String url = "https://api.themoviedb.org/3"+Sortpopular+"?api_key="+API_KEY;
 
 
             JsonObjectRequest jsonRequest = new JsonObjectRequest
@@ -121,7 +122,7 @@ public class popular  extends AppCompatActivity {
                 @Override
                 public void onLoadMore(int current_page) {
                     // do something...
-                    String url = "https://api.themoviedb.org/3/movie/popular?page="+current_page+"&&api_key="+API_KEY;
+                    String url = "https://api.themoviedb.org/3"+Sortpopular+"?page="+current_page+"&&api_key="+API_KEY;
 
 
                     JsonObjectRequest jsonRequest = new JsonObjectRequest
@@ -198,7 +199,7 @@ public class popular  extends AppCompatActivity {
         else if(getResources().getConfiguration().orientation == 1) {
             mLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
             mRecyclerView.setLayoutManager(mLayoutManager);
-            String url = "https://api.themoviedb.org/3/movie/popular?api_key="+API_KEY;
+            String url = "https://api.themoviedb.org/3"+Sortpopular+"?api_key="+API_KEY;
 
 
             JsonObjectRequest jsonRequest = new JsonObjectRequest
@@ -247,7 +248,7 @@ public class popular  extends AppCompatActivity {
                 @Override
                 public void onLoadMore(int current_page) {
                     // do something...
-                    String url = "https://api.themoviedb.org/3/movie/popular?page="+current_page+"&&api_key="+API_KEY;
+                    String url = "https://api.themoviedb.org/3"+Sortpopular+"?page="+current_page+"&&api_key="+API_KEY;
 
 
                     JsonObjectRequest jsonRequest = new JsonObjectRequest
