@@ -1,4 +1,4 @@
-package app.popular_movies.usman.popularmovies;
+package app.usman.popular_movies;
 
 import android.content.Context;
 import android.content.Intent;

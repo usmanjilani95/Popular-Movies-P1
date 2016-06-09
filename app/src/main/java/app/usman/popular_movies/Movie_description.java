@@ -1,4 +1,4 @@
-package app.popular_movies.usman.popularmovies;
+package app.usman.popular_movies;
 
 import android.content.Intent;
 import android.net.Uri;

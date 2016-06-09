@@ -1,4 +1,4 @@
-package app.popular_movies.usman.popularmovies;
+package app.usman.popular_movies;
 
 
 import android.support.v7.widget.GridLayoutManager;
