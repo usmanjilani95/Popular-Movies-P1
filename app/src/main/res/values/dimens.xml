@@ -26,4 +26,6 @@
     <dimen name="text_size2">18sp</dimen>
     <dimen name="ratingbar_marginleft">98dp</dimen>
     <dimen name="ratingbar_marginstart">98dp</dimen>
+    <dimen name="app_bar_height">250dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 </resources>

@@ -36,6 +36,16 @@
                 tools:visibility="visible"
                 android:background="@color/red"
                 />
+            <Button
+                android:id="@+id/item2"
+                android:layout_width="@dimen/button_width"
+                android:layout_height="@dimen/button_height"
+                android:layout_weight="1"
+
+                android:text="@string/favourite"
+                tools:visibility="visible"
+                android:background="@color/red"
+                />
 
 
 
