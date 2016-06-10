@@ -1,5 +1,8 @@
 package app.usman.popular_movies;
 
+/**
+ * Created by Usman Ahmad Jilani on 10-06-2016.
+ */
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -11,14 +14,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RatingBar;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,97 +32,65 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-import app.usman.popular_movies.Realm.FavMovies;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 
-
 public class Movie_description extends AppCompatActivity {
-    ImageView poster,title,rating_back,pop_back,lang_back,back_img,poster_img;
-    //ImageLoader imageLoader = AppController.getInstance().getImageLoader();
-    TextView year,average,synopsis,mTrailer,mReview,moTitle,id,mAuthor,mText,mLang,mPop;
-    FloatingActionButton share,fav;
-    FrameLayout frame;
+    ImageView poster,title;
+    TextView year,average,synopsis,mTrailer,mReview,moTitle,mAuthor,mText,tgenre,tpopularity,tlanguage,tvote;
+    FloatingActionButton share,share_btn;
+    String mTitle,mBackdrop_Image,mOverview,mVote,mRelease_Date,mPoster_Image,mId,mgenre,mlanguage;
+    Integer mpopularity;
     Context context;
-    String mTitle;
-    String mBackdrop_Image;
-    String mOverview;
-    String mVote;
-    String mRelease_Date;
-    String mPoster_Image;
-    String mId;
-    String mlang;
-    //private CollapsingToolbarLayout mCollapsingToolbarLayout;
-    //private Toolbar mToolbar;
-    private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    RealmConfiguration realmConfig;
-    // Get a Realm instance for this thread
-    Realm realm;
-    //RealmList<FavMovies> a=new RealmList<>();
-    FavMovies m,mf;
-    //String key;
 
-    private LinearLayoutManager mLayoutManager;
-    ImageView mBackdrop,trailer_image;
-    private ArrayList<String> trailerInfo = new ArrayList<>();
-    private ArrayList<String> popul = new ArrayList<>();
-    private ArrayList<String> language = new ArrayList<>();
-    private ArrayList<String> runtime = new ArrayList<>();
-    private ArrayList<String> votecount = new ArrayList<>();
-    private ArrayList<String> videokey = new ArrayList<>();
-    private ArrayList<String> reviewId = new ArrayList<>();
-    private ArrayList<String> reviewAuthor = new ArrayList<>();
-    private ArrayList<String> reviewText = new ArrayList<>();
-    private ArrayList<String> thumb_img = new ArrayList<>();
-    Movie movie;
-    String key;
-    TextView vote_count;
-
-
-    String API_KEY;
-
-
-
-    RatingBar r;
     float rate;
     double d;
-    ScrollView v;
 
+    String API_KEY;
+    RealmConfiguration realmConfig;
+    ImageButton ib;
+    // Get a Realm instance for this thread
+    Realm realm;
+    //RealmList<Movies_Fav> a=new RealmList<>();
+    Fav_Movies m,mf;
+    String key;
+    private ArrayList<String> videokey = new ArrayList<>();
+    private ArrayList<String> reviewId = new ArrayList<>();
+    private ArrayList<String> thumb_img = new ArrayList<>();
+    private ArrayList<String> trailerInfo = new ArrayList<>();
+    private ArrayList<String> reviewAuthor = new ArrayList<>();
+    private ArrayList<String> reviewText = new ArrayList<>();
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private LinearLayoutManager mLayoutManager;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-
-
-            setContentView(R.layout.activity_scrolling);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_scrolling);
+        // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         context=this;
-           // setContentView(R.layout.content_scrolling);
-            API_KEY=getString(R.string.API_KEY);
-            realmConfig = new RealmConfiguration.Builder(context).deleteRealmIfMigrationNeeded().build();
-            realm = Realm.getInstance(realmConfig);
-            poster= (ImageView) findViewById(R.id.poster);
-            year= (TextView) findViewById(R.id.year);
-            frame= (FrameLayout) findViewById(R.id.frame1);
-            mLang= (TextView) findViewById(R.id.language);
-           // mBackdrop_Image= (ImageView) findViewById(R.id.imgBack);
-           // mPoster_Image= (ImageView) findViewById(R.id.poster);
-            average= (TextView) findViewById(R.id.rating);
-            title= (ImageView) findViewById(R.id.imgBack);
-            mPop= (TextView) findViewById(R.id.popularity);
-            rating_back= (ImageView) findViewById(R.id.ratings_background);
-            pop_back= (ImageView) findViewById(R.id.pop_background);
-            lang_back= (ImageView) findViewById(R.id.lang_background);
-            trailer_image= (ImageView) findViewById(R.id.trailer_image);
-            synopsis= (TextView) findViewById(R.id.synopsis);
-            share= (FloatingActionButton) findViewById(R.id.share);
-            vote_count=(TextView) findViewById(R.id.vote_count);
+        // Create a RealmConfiguration which is to locate Realm file in package's "files" directory.
+        API_KEY=getResources().getString(R.string.API_KEY);
+        realmConfig = new RealmConfiguration.Builder(context).deleteRealmIfMigrationNeeded().build();
+        realm = Realm.getInstance(realmConfig);
+        poster= (ImageView) findViewById(R.id.poster);
+        year= (TextView) findViewById(R.id.year);
+        average= (TextView) findViewById(R.id.rating);
+        title= (ImageView) findViewById(R.id.imgBack);
+        synopsis= (TextView) findViewById(R.id.synopsis);
+        share= (FloatingActionButton) findViewById(R.id.fab);
+        share_btn= (FloatingActionButton) findViewById(R.id.fabshare);
         mAuthor= (TextView) findViewById(R.id.review_author_text);
-
         mText= (TextView) findViewById(R.id.review_text);
+        tgenre= (TextView) findViewById(R.id.genre_text);
+        tpopularity= (TextView) findViewById(R.id.popularity);
+        tlanguage= (TextView) findViewById(R.id.language);
+        tvote= (TextView) findViewById(R.id.rating);
+        ib= (ImageButton) findViewById(R.id.imgVideo);
+//        r= (RatingBar) findViewById(R.id.rating);
         mRecyclerView= (RecyclerView) findViewById(R.id.recycler_movie_details);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(context) {
@@ -133,99 +100,74 @@ public class Movie_description extends AppCompatActivity {
             }
         };
         mRecyclerView.setLayoutManager(mLayoutManager);
-            //mBackdrop=(ImageView)findViewById(R.id.imgBack);
-    //        r= (RatingBar) findViewById(R.id.rating);
-            fav=(FloatingActionButton) findViewById(R.id.favbutton);
-            //mTrailer= (TextView) findViewById(R.id.trailer);
-            //mReview= (TextView) findViewById(R.id.review);
-            moTitle= (TextView) findViewById(R.id.motitle);
-            //v= (ScrollView) findViewById(R.id.sview);
-            //mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout_movie_details);
-            //mToolbar = (Toolbar)findViewById(R.id.toolbar_movie_details);
-            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-            setSupportActionBar(toolbar);
+        moTitle= (TextView) findViewById(R.id.motitle);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
 
 
-            //imageLoader.get("http://img.youtube.com/vi/" + source + "/0.jpg", ImageLoader.getImageListener(adjustableImageView, R.drawable.loading_trailer, R.drawable.error_trailer));
-
-
-
-            Bundle extras = getIntent().getExtras();
-            if (extras != null) {
-
-                movie=(Movie)extras.getSerializable("Movie");
-//               mTitle = extras.getString("title");
-//               mBackdrop_Image =extras.getString("b_img");
-//               mOverview = extras.getString("overview");
-//               mVote = extras.getString("vote");
-//                mRelease_Date = extras.getString("r_date");
-//                mPoster_Image = extras.getString("p_img");
-//                mId=extras.getString("id");
-            }
-
+            mTitle = extras.getString("title");
+            mBackdrop_Image =extras.getString("b_img");
+            mOverview = extras.getString("overview");
+            mVote = extras.getString("vote");
+            mRelease_Date = extras.getString("r_date");
+            mPoster_Image = extras.getString("p_img");
+            mId = extras.getString("id");
+            mgenre=extras.getString("genre");
+            mpopularity=extras.getInt("popularity");
+            mlanguage=extras.getString("language");
+        }
+        toolbar.setTitle(mTitle);
+        Glide.with(getApplicationContext()).load(Uri.parse(mPoster_Image)).error(R.drawable.placeholder).into(poster);
+        Glide.with(getApplicationContext()).load(Uri.parse(mBackdrop_Image)).error(R.drawable.placeholder).into(title);
         year.setText(mRelease_Date);
-        average.setText(mVote);
+//        average.setText(mVote);
         moTitle.setText(mTitle);
         synopsis.setText(mOverview);
-//        d=Double.parseDouble(mVote);
-            Glide.with(getApplicationContext()).load(Uri.parse(movie.getImgMain())).error(R.drawable.placeholder).into(poster);
-            Glide.with(getApplicationContext()).load(Uri.parse(movie.getBackdropImg())).error(R.drawable.placeholder).into(title);
-//        Glide.with(getApplicationContext()).load(Uri.parse(mPoster_Image)).error(R.drawable.placeholder).into(poster);
-//        Glide.with(getApplicationContext()).load(Uri.parse(mBackdrop_Image)).error(R.drawable.placeholder).into(title);
+        d=Double.parseDouble(mVote);
+        rate=(float)d;
+        tvote.setText(String.valueOf(rate));
+        if(mlanguage==null)
+            tlanguage.setText("NA");
+        else
+            tlanguage.setText(mlanguage);
+        if(mpopularity==0)
+            tpopularity.setText("NA");
+        else
+            tpopularity.setText(String.valueOf(mpopularity));
+        fetchgenre();
+        //r.setRating(rate / 2);
 
-        title.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(videokey.size()>0){
-                    String video_path = "https://www.youtube.com/watch?v="+videokey.get(0);
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(video_path));
-                    startActivity(intent);}
-                }
-            });
-            year.setText(movie.getReleaseDate());
-            //average.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.FILL_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT));
-
-            //rating_back.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT));
-            //frame.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT));
-//            frame.addView(rating_back);
-  //          frame.addView(average);
-//            setContentView(frame);
-            moTitle.setText(movie.getTitle());
-            synopsis.setText(movie.getOverview());
-            d=Double.parseDouble(movie.getRating());
-            average.setText(movie.getRating());
-            vote_count.setText(movie.getVoteCount());
-            mLang.setText(movie.getLang());
-            DecimalFormat df2 = new DecimalFormat(".##");
-            d=Double.parseDouble(movie.getPopularity());
-            d=Math.round(d*100.00)/100.00;
-            String value= String.valueOf(d);
-            mPop.setText(value);
-            //id.setText(mId);
-            getSupportActionBar().setTitle(movie.getTitle());
-            rate=(float)d;
-
-            Log.i("test", String.valueOf(rate));
-    //        r.setRating(rate / 2);
-
-            mId=movie.getId();
-            share.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            String shareBody = "Here is the share content body";
-            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-            sharingIntent.setType("text/plain");
-            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, mTitle);
-            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, mOverview);
-            startActivity(Intent.createChooser(sharingIntent,"Share Via"));
-        }
-    });
         fetchdata();
+        fetchTrailer();
+        fetchReview();
+//        trailer_image.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String video_path = "https://www.youtube.com/watch?v="+key;
+//                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(video_path));
+//                startActivity(intent);
+//
+//            }
+//        });
+        ib.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String video_path = "https://www.youtube.com/watch?v="+videokey.get(0);
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(video_path));
+                startActivity(intent);
+            }
+        });
+
         share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 realm.beginTransaction();
-                //m=realm.createObject(FavMovies.class);
+                //m=realm.createObject(Movies_Fav.class);
                 //  Toast.makeText(getBaseContext(),String.valueOf(mf.getFav()),Toast.LENGTH_SHORT).show();
                 if(mf.getFav()==0) {
                     realm.commitTransaction();
@@ -240,55 +182,17 @@ public class Movie_description extends AppCompatActivity {
 
             }
         });
-
-
-
-            String url = "https://api.themoviedb.org/3/movie/"+mId+"/videos?api_key="+API_KEY;
-
-
-            JsonObjectRequest jsonRequest = new JsonObjectRequest
-                    (Request.Method.GET, url, (String) null, new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            // the response is already constructed as a JSONObject!
-                            try {
-                                JSONArray json = response.getJSONArray("results");
-                                if(json.length()<=0){
-                                    findViewById(R.id.imgPlay).setVisibility(View.GONE);
-                                }
-                                for (int i = 0; i < json.length(); i++) {
-                                    JSONObject jsonObject = json.getJSONObject(i);
-
-                                     key = jsonObject.getString("key");
-                                    videokey.add(key);
-
-                                    String name = jsonObject.getString("name");
-                                    trailerInfo.add(name);
-                                }
-                                for(int i=0;i<videokey.size();i++)
-                                {
-                                    String url3="http://img.youtube.com/vi/"+videokey.get(i)+"/default.jpg";
-                                    thumb_img.add(url3);
-                                }
-                                if(thumb_img.size()!=0 && trailerInfo.size()!=0) {
-                                    mAdapter = new MyAdapter3(thumb_img, trailerInfo);
-                                    mRecyclerView.setAdapter(mAdapter);
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                                Toast.makeText(getApplicationContext(), "Something went wrong!!please check your connection 111", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    }, new Response.ErrorListener() {
-
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            error.printStackTrace();
-                            Toast.makeText(getApplicationContext(), "Something went wrong!!please check your connection", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
-            Volley.newRequestQueue(getApplicationContext()).add(jsonRequest);
+        share_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                String shareBody = "Here is the trailer";
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, mTitle);
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT,mTitle+"     https://www.youtube.com/watch?v="+videokey.get(0));
+                startActivity(Intent.createChooser(sharingIntent, "Share via"));
+            }
+        });
 
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener2(getApplicationContext(), new RecyclerItemClickListener2.OnItemClickListener() {
@@ -302,53 +206,14 @@ public class Movie_description extends AppCompatActivity {
                 }
                 ));
 
-        url = "https://api.themoviedb.org/3/movie/"+mId+"/reviews?api_key="+API_KEY;
-
-        JsonObjectRequest jsonRequest1 = new JsonObjectRequest
-                (Request.Method.GET, url, (String) null, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // the response is already constructed as a JSONObject!
-                        try {
-                            JSONArray json = response.getJSONArray("results");
-                            for (int i = 0; i < json.length(); i++) {
-                                JSONObject jsonObject = json.getJSONObject(i);
-
-                                reviewId.add(jsonObject.getString("id"));
-                                reviewText.add(jsonObject.getString("content"));
-                                reviewAuthor.add(jsonObject.getString("author"));
-                            }
-                            if(reviewAuthor.size()!=0 && reviewText.size()!=0) {
-                                mAuthor.setText(reviewAuthor.get(0));
-                                mText.setText(reviewText.get(0));
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Toast.makeText(getApplicationContext(), "Something went wrong!!please check your connection 111", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        error.printStackTrace();
-                        Toast.makeText(getApplicationContext(), "Something went wrong!!please check your connection", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-        Volley.newRequestQueue(getApplicationContext()).add(jsonRequest1);
-
-
     }
-
     public void fetchdata()
     {
         realm.beginTransaction();
-        // FavMovies m=realm.createObject(FavMovies.class);
+        // Movies_Fav m=realm.createObject(Movies_Fav.class);
         //a=m.getMovies_id();
-        m=realm.createObject(FavMovies.class);
-        RealmResults<FavMovies> result3 = realm.where(FavMovies.class).equalTo("id", mId).findAll();
+        m=realm.createObject(Fav_Movies.class);
+        RealmResults<Fav_Movies> result3 = realm.where(Fav_Movies.class).equalTo("id", mId).findAll();
         if(result3.size()!=0)
             mf=result3.first().getObject();
         else
@@ -370,121 +235,202 @@ public class Movie_description extends AppCompatActivity {
 
 
     }
-
     void fetchdata1()
     {
         realm.beginTransaction();
-        // FavMovies m=realm.createObject(FavMovies.class);
-        mf=realm.createObject(FavMovies.class);
+        // Movies_Fav m=realm.createObject(Movies_Fav.class);
+        mf=realm.createObject(Fav_Movies.class);
         mf.setFav(1);
-        mf.setId(movie.getId());
+        mf.setId(mId);
         mf.setObject(mf);
-        mf.setBackdropImg(movie.getBackdropImg());
-        mf.setOverview(movie.getOverview());
-        mf.setPosterImg(movie.getImgMain());
-        mf.setRelease_date(movie.getReleaseDate());
-        mf.setTitle(movie.getTitle());
-        mf.setVote_average(movie.getVoteCount());
+        mf.setBackdropImg(mBackdrop_Image);
+        mf.setOverview(mOverview);
+        mf.setPosterImg(mPoster_Image);
+        mf.setRelease_date(mRelease_Date);
+        mf.setTitle(mTitle);
+        mf.setVote_average(mVote);
+        mf.setGenre(mgenre);
+        mf.setLanguage(mlanguage);
+        mf.setPopularity(mpopularity);
         share.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),android.R.drawable.btn_star_big_on));
         realm.commitTransaction();
         // new Favourite().fetchsData();
 
 
     }
-
-
     void fetchdata2()
     {
         realm.beginTransaction();
 
         share.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),android.R.drawable.btn_star_big_off));
 
-        RealmResults<FavMovies> result2 = realm.where(FavMovies.class).findAll();
+        RealmResults<Fav_Movies> result2 = realm.where(Fav_Movies.class).findAll();
         mf.deleteFromRealm();
         //result2.deleteAllFromRealm();
         realm.commitTransaction();
         realm.beginTransaction();
-        mf=realm.createObject(FavMovies.class);
+        mf=realm.createObject(Fav_Movies.class);
         realm.commitTransaction();
 //        new Favourite().fetchsData();
 
 
     }
 
+    public void fetchReview()
+    {
+        String url = "https://api.themoviedb.org/3/movie/"+mId+"/reviews?api_key="+API_KEY;
+        startAnim2();
+
+        JsonObjectRequest jsonRequest = new JsonObjectRequest
+                (Request.Method.GET, url, (String) null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // the response is already constructed as a JSONObject!
+                        try {
+                            JSONArray json = response.getJSONArray("results");
+                            for (int i = 0; i < json.length(); i++) {
+                                JSONObject jsonObject = json.getJSONObject(i);
+
+                                reviewId.add(jsonObject.getString("id"));
+                                reviewText.add(jsonObject.getString("content"));
+                                reviewAuthor.add(jsonObject.getString("author"));
+                            }
+                            if(reviewAuthor.size()!=0 && reviewText.size()!=0) {
+                                stopAnim2();
+                                mAuthor.setText(reviewAuthor.get(0));
+                                mText.setText(reviewText.get(0));
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(getApplicationContext(), "Something went wrong!!please check your connection 111", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                        Toast.makeText(getApplicationContext(), "Something went wrong!!please check your connection", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        Volley.newRequestQueue(getApplicationContext()).add(jsonRequest);
+
+
+    }
+
+    public void fetchTrailer()
+    {
+        String url = "https://api.themoviedb.org/3/movie/"+mId+"/videos?api_key="+API_KEY;
+        startAnim();
+
+        JsonObjectRequest jsonRequest = new JsonObjectRequest
+                (Request.Method.GET, url, (String) null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // the response is already constructed as a JSONObject!
+                        try {
+                            JSONArray json = response.getJSONArray("results");
+                            for (int i = 0; i < json.length(); i++) {
+                                JSONObject jsonObject = json.getJSONObject(i);
+
+                                key = jsonObject.getString("key");
+                                videokey.add(key);
+
+                                String name = jsonObject.getString("name");
+                                trailerInfo.add(name);
+                            }
+                            for(int i=0;i<videokey.size();i++)
+                            {
+                                String url2="http://img.youtube.com/vi/"+videokey.get(i)+"/default.jpg";
+                                thumb_img.add(url2);
+                            }
+                            if(thumb_img.size()!=0 && trailerInfo.size()!=0) {
+                                stopAnim();
+                                mAdapter = new MyAdapter3(thumb_img, trailerInfo);
+                                mRecyclerView.setAdapter(mAdapter);
+                            }
+                            else
+                            {
+                                ib.setVisibility(View.GONE);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(getApplicationContext(), "Something went wrong!!please check your connection 111", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                        Toast.makeText(getApplicationContext(), "Something went wrong!!please check your connection", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        Volley.newRequestQueue(getApplicationContext()).add(jsonRequest);
+
+
+    }
+
+    public void fetchgenre()
+    {
+        String url = "https://api.themoviedb.org/3/genre/"+mgenre+"?api_key="+API_KEY;
+
+
+        JsonObjectRequest jsonRequest = new JsonObjectRequest
+                (Request.Method.GET, url, (String) null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // the response is already constructed as a JSONObject!
+                        try {
+                            tgenre.setText(response.getString("name"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(getApplicationContext(), "Something went wrong!!please check your connection ", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                        Toast.makeText(getApplicationContext(), "Something went wrong!!please check your connection", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        Volley.newRequestQueue(getApplicationContext()).add(jsonRequest);
 
 
 
-}
+    }
 
- class MyAdapter3 extends RecyclerView.Adapter<MyAdapter3.ViewHolder> {
-    private ArrayList<String> keylist;
-    private ArrayList<String> namelist;
-    private ArrayList<String> thumblist;
-    public static Context context;
-    public static final String MY_PREFS_NAME = "MyPrefsFile";
-    int a,b;
-
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
-
-
-        public TextView mTextView;
-        public ImageView mImageView;
-        public ImageView mKeyView;
-
-
-        public ViewHolder(View v) {
-            super(v);
-
-            mImageView= (ImageView) v.findViewById(R.id.trailer_image);
-            mTextView= (TextView) v.findViewById(R.id.title_text);
-            context = v.getContext();
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        @Override
-        public void onClick(View view) {
-            Log.i("MyActivity", "onClick " + getAdapterPosition() + " ");
-        }
     }
 
-    // Provide a suitable constructor (depends on the kind of dataset)
-    public MyAdapter3(ArrayList<String> myDataset,ArrayList<String> myDataset2){
-        this.thumblist = myDataset;
-        this.namelist= myDataset2;
-
-
-
+    void startAnim(){
+        findViewById(R.id.avloadingIndicatorView).setVisibility(View.VISIBLE);
     }
 
-    // Create new views (invoked by the layout manager)
-    @Override
-    public MyAdapter3.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                    int viewType) {
-        // create a new view
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.trailer_layout, parent, false);
-
-        ViewHolder vh = new ViewHolder((View) v);
-        return vh;
+    void stopAnim(){
+        findViewById(R.id.avloadingIndicatorView).setVisibility(View.GONE);
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
-    @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-
-
-        Glide.with(context).load(Uri.parse(thumblist.get(position))).error(R.drawable.placeholder).into(holder.mImageView);
-        holder.mTextView.setText(namelist.get(position));
-
+    void startAnim2(){
+        findViewById(R.id.avloadingIndicatorView2).setVisibility(View.VISIBLE);
     }
 
-
-    // Return the size of your dataset (invoked by the layout manager)
-    @Override
-    public int getItemCount() {
-
-        return thumblist.size();
+    void stopAnim2(){
+        findViewById(R.id.avloadingIndicatorView2).setVisibility(View.GONE);
     }
 
 }

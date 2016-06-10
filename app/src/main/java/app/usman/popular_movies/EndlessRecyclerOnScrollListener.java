@@ -1,6 +1,8 @@
 package app.usman.popular_movies;
 
-
+/**
+ * Created by Usman Ahmad Jilani on 10-06-2016.
+ */
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 

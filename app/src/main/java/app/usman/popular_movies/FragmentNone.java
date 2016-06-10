@@ -1,14 +1,14 @@
 package app.usman.popular_movies;
 
-import android.app.Fragment;
+/**
+ * Created by Usman Ahmad Jilani on 10-06-2016.
+ */
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * Created by Usman Ahmad Jilani on 09-06-2016.
- */
 public class FragmentNone extends Fragment {
 
     @Override

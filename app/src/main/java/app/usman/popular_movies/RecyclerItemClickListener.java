@@ -1,7 +1,7 @@
 package app.usman.popular_movies;
 
 /**
- * Created by Usman Ahmad Jilani on 22-05-2016.
+ * Created by Usman Ahmad Jilani on 10-06-2016.
  */
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

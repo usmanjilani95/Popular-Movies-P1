@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".ScrollingActivity"
+    tools:context=".Movie_description"
     tools:showIn="@layout/activity_scrolling">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -59,37 +59,30 @@
                 android:paddingTop="8dp"
                 android:textSize="18sp" />
 
+
             <TextView
-                android:id="@+id/tagline"
+                android:id="@+id/year"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/motitle"
                 android:layout_toRightOf="@id/poster"
                 android:paddingBottom="8dp"
                 android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:textStyle="italic" />
-
-            <TextView
-                android:id="@+id/year"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tagline"
-                android:layout_toRightOf="@id/poster"
-                android:paddingBottom="8dp"
-                android:paddingLeft="16dp"
                 android:paddingRight="16dp" />
 
 
+
             <TextView
-                android:id="@+id/duration"
+                android:id="@+id/genre_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/year"
                 android:layout_toRightOf="@id/poster"
                 android:paddingBottom="8dp"
                 android:paddingLeft="16dp"
-                android:paddingRight="16dp" />
+                android:paddingRight="16dp"  />
+
+
 
         </RelativeLayout>
 
@@ -120,8 +113,7 @@
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:id="@+id/frame1">
+                    android:layout_gravity="center">
 
                     <ImageView
                         android:id="@+id/ratings_background"
@@ -139,23 +131,11 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:textColor="@android:color/black"
-                        android:textSize="11sp"
-                        />
+                        android:textSize="15sp" />
 
                 </FrameLayout>
 
 
-                <TextView
-                    android:id="@+id/vote_count"
-                    android:layout_width="64dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:ellipsize="end"
-                    android:gravity="center"
-                    android:maxLines="1"
-                    android:textSize="11sp"
-
-                    />
                 <TextView
                     android:id="@+id/vote_count1"
                     android:layout_width="64dp"
@@ -171,40 +151,7 @@
                     />
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/two"
-                android:layout_width="88dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_toRightOf="@id/one"
-                android:gravity="center_horizontal"
-                android:orientation="vertical"
-                android:paddingRight="4dp"
-                android:paddingTop="16dp">
 
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center">
-
-                    <ImageView
-                        android:id="@+id/genre_background"
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_genre" />
-                </FrameLayout>
-
-                <TextView
-                    android:id="@+id/genre"
-                    android:layout_width="64dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:gravity="center"
-                    android:maxLines="1"
-                    android:textSize="11sp"
-                    android:text="@string/genre"/>
-            </LinearLayout>
 
 
             <LinearLayout
@@ -212,7 +159,7 @@
                 android:layout_width="88dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_toRightOf="@id/two"
+                android:layout_toRightOf="@id/one"
                 android:gravity="center_horizontal"
                 android:orientation="vertical"
                 android:paddingRight="4dp"
@@ -237,7 +184,7 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:textColor="@android:color/black"
-                        android:textSize="11sp" />
+                        android:textSize="15sp" />
 
                 </FrameLayout>
 
@@ -278,10 +225,11 @@
                         android:id="@+id/language"
                         android:layout_width="64dp"
                         android:layout_height="64dp"
-                        android:layout_gravity="center"
+                        android:layout_gravity="center_horizontal|center_vertical"
                         android:gravity="center"
                         android:textColor="@android:color/black"
-                        android:textSize="11sp" />
+                        android:textSize="25sp"
+                        android:fontFamily="cursive"/>
 
                 </FrameLayout>
 
@@ -319,20 +267,35 @@
             android:background="#20000000"
             android:padding="8dp" />
 
-
-
         <!--  <com.balysv.materialripple.MaterialRippleLayout
-           android:id="@+id/ripple"
-           android:layout_width="match_parent"
-           android:layout_height="match_parent"> -->
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_movie_details"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+              android:id="@+id/ripple"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"> -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Trailer"
+            android:textSize="20sp"/>
+
+        <com.wang.avi.AVLoadingIndicatorView
+            android:id="@+id/avloadingIndicatorView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:layout_gravity="center_horizontal|center_vertical"
+            app:indicator="BallClipRotatePulse"
+            app:indicator_color="@android:color/holo_blue_light"
+            />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_movie_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 
-      <!--   </com.balysv.materialripple.MaterialRippleLayout> -->
+        <!--   </com.balysv.materialripple.MaterialRippleLayout> -->
 
         <View
             android:layout_width="match_parent"
@@ -341,6 +304,21 @@
             android:background="#20000000"
             android:padding="8dp" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Review"
+            android:textSize="20sp"/>
+        <com.wang.avi.AVLoadingIndicatorView
+            android:id="@+id/avloadingIndicatorView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:layout_gravity="center_horizontal|center_vertical"
+            app:indicator="BallClipRotatePulse"
+            app:indicator_color="@android:color/holo_blue_light"
+            />
 
         <TextView
             android:id="@+id/review_author_text"

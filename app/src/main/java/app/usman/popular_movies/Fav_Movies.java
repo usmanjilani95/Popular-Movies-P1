@@ -1,29 +1,24 @@
-package app.usman.popular_movies.Realm;
+package app.usman.popular_movies;
 
 /**
- * Created by Usman Ahmad Jilani on 22-05-2016.
+ * Created by Usman Ahmad Jilani on 10-06-2016.
  */
+
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
+public class Fav_Movies extends RealmObject {
 
-
-/**
- * Created by NILESH on 17-05-2016.
- */
-public class FavMovies extends RealmObject {
-
-    String posterImg,backdropImg,title,overview,vote_average,release_date,vote_count,pop,lang;
-    int fav;
-    FavMovies object;
+    String posterImg,backdropImg,title,overview,vote_average,release_date,genre,language;
+    int fav,popularity;
+    Fav_Movies object;
 
 
     @PrimaryKey
     String id;
 
 
-  /*  public FavMovies()
+  /*  public Movies_Fav()
     {
-
         this.fav=0;
         this.id=null;
     }*/
@@ -45,11 +40,11 @@ public class FavMovies extends RealmObject {
         return id;
     }
 
-    public void setObject(FavMovies object) {
+    public void setObject(Fav_Movies object) {
         this.object = object;
     }
 
-    public FavMovies getObject() {
+    public Fav_Movies getObject() {
         return object;
     }
 
@@ -101,27 +96,27 @@ public class FavMovies extends RealmObject {
         this.vote_average = vote_average;
     }
 
-    public String getPop() {
-        return pop;
+    public String getGenre() {
+        return genre;
     }
 
-    public void setPop(String pop) {
-        this.pop = pop;
+    public void setGenre(String genre) {
+        this.genre = genre;
     }
 
-    public String getVote_count() {
-        return vote_count;
+    public int getPopularity() {
+        return popularity;
     }
 
-    public void setVote_count(String vote_count) {
-        this.vote_count = vote_count;
+    public void setPopularity(int popularity) {
+        this.popularity = popularity;
     }
 
-    public String getLang() {
-        return lang;
+    public String getLanguage() {
+        return language;
     }
 
-    public void setLang(String lang) {
-        this.lang = lang;
+    public void setLanguage(String language) {
+        this.language = language;
     }
 }

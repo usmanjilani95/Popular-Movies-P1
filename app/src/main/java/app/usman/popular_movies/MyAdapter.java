@@ -2,6 +2,7 @@ package app.usman.popular_movies;
 
 /**
  * Created by Usman Ahmad Jilani on 10-06-2016.
+ *
  */
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -15,14 +16,13 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
-public class MyAdapter1 extends RecyclerView.Adapter<MyAdapter1.ViewHolder> {
+public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private ArrayList<String> imagelist;
 
     public static Context context;
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
 
 
 
@@ -43,16 +43,17 @@ public class MyAdapter1 extends RecyclerView.Adapter<MyAdapter1.ViewHolder> {
     }
 
 
-    public MyAdapter1(ArrayList<String> myDataset){
+    public MyAdapter(ArrayList<String> myDataset){
         imagelist = myDataset;
+
 
 
     }
 
 
     @Override
-    public MyAdapter1.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                    int viewType) {
+    public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+                                                   int viewType) {
 
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.gridlayout, parent, false);
@@ -60,7 +61,6 @@ public class MyAdapter1 extends RecyclerView.Adapter<MyAdapter1.ViewHolder> {
         ViewHolder vh = new ViewHolder((View) v);
         return vh;
     }
-
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
@@ -70,7 +70,6 @@ public class MyAdapter1 extends RecyclerView.Adapter<MyAdapter1.ViewHolder> {
 
 
     }
-
 
     @Override
     public int getItemCount() {

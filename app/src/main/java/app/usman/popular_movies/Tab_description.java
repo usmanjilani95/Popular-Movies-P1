@@ -1,5 +1,8 @@
 package app.usman.popular_movies;
 
+/**
+ * Created by Usman Ahmad Jilani on 10-06-2016.
+ */
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -15,7 +18,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -32,41 +34,32 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-import app.usman.popular_movies.Realm.FavMovies;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
-/**
- * Created by Usman Ahmad Jilani on 09-06-2016.
- */
+
 public class Tab_description extends Fragment {
     ImageView poster,title;
-    ImageView rating_back,pop_back,lang_back,back_img,poster_img;
     TextView year,average,synopsis,mTrailer,mReview,moTitle,mAuthor,mText,tgenre,tpopularity,tlanguage,tvote;
-    TextView id,mLang,mPop;
     FloatingActionButton share,share_btn;
-    FloatingActionButton fav;
     String mTitle,mBackdrop_Image,mOverview,mVote,mRelease_Date,mPoster_Image,mId,mgenre,mlanguage;
     Integer mpopularity;
     Context context;
-    ImageView mBackdrop,trailer_image;
-    TextView vote_count;
+
     View view;
     float rate;
     double d;
-    Movie movie;
+
     String API_KEY;
     RealmConfiguration realmConfig;
     ImageButton ib;
     // Get a Realm instance for this thread
     Realm realm;
     //RealmList<Movies_Fav> a=new RealmList<>();
-    FavMovies m,mf;
+    Fav_Movies m,mf;
     String key;
-    FrameLayout frame;
     private ArrayList<String> videokey = new ArrayList<>();
     private ArrayList<String> reviewId = new ArrayList<>();
     private ArrayList<String> thumb_img = new ArrayList<>();
@@ -121,34 +114,18 @@ public class Tab_description extends Fragment {
         realm = Realm.getInstance(realmConfig);
         poster= (ImageView) view.findViewById(R.id.poster);
         year= (TextView) view.findViewById(R.id.year);
-        frame= (FrameLayout) view.findViewById(R.id.frame1);
-        mLang= (TextView) view.findViewById(R.id.language);
         average= (TextView) view.findViewById(R.id.rating);
         title= (ImageView) view.findViewById(R.id.imgBack);
-        mPop= (TextView) view.findViewById(R.id.popularity);
-        rating_back= (ImageView) view.findViewById(R.id.ratings_background);
-
-        pop_back= (ImageView) view.findViewById(R.id.pop_background);
-        lang_back= (ImageView) view.findViewById(R.id.lang_background);
-        trailer_image= (ImageView) view.findViewById(R.id.trailer_image);
-        synopsis=(TextView) view.findViewById(R.id.synopsis);
-        share= (FloatingActionButton) view.findViewById(R.id.share);
-        vote_count=(TextView) view.findViewById(R.id.vote_count);
-        mAuthor= (TextView) view.findViewById(R.id.review_author_text);
-
-        mText= (TextView) view.findViewById(R.id.review_text);
-        mRecyclerView= (RecyclerView) view.findViewById(R.id.recycler_movie_details);
-        mRecyclerView.setHasFixedSize(true);
         synopsis= (TextView) view.findViewById(R.id.synopsis);
         share= (FloatingActionButton) view.findViewById(R.id.fab);
         share_btn= (FloatingActionButton) view.findViewById(R.id.fabshare);
         mAuthor= (TextView) view.findViewById(R.id.review_author_text);
         mText= (TextView) view.findViewById(R.id.review_text);
-        //tgenre= (TextView) view.findViewById(R.id.genre_text);
-
+        tgenre= (TextView) view.findViewById(R.id.genre_text);
+        tpopularity= (TextView) view.findViewById(R.id.popularity);
         tlanguage= (TextView) view.findViewById(R.id.language);
         tvote= (TextView) view.findViewById(R.id.rating);
-
+        ib= (ImageButton) view.findViewById(R.id.imgVideo);
 //        r= (RatingBar) findViewById(R.id.rating);
         mRecyclerView= (RecyclerView) view.findViewById(R.id.recycler_movie_details);
         mRecyclerView.setHasFixedSize(true);
@@ -160,11 +137,8 @@ public class Tab_description extends Fragment {
         };
         mRecyclerView.setLayoutManager(mLayoutManager);
         moTitle= (TextView) view.findViewById(R.id.motitle);
-        fav=(FloatingActionButton) view.findViewById(R.id.favbutton);
 
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-
-
 //        setSupportActionBar(toolbar);
 //       getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -172,32 +146,21 @@ public class Tab_description extends Fragment {
         toolbar.setTitle(mTitle);
         Glide.with(getActivity()).load(Uri.parse(mPoster_Image)).error(R.drawable.placeholder).into(poster);
         Glide.with(getActivity()).load(Uri.parse(mBackdrop_Image)).error(R.drawable.placeholder).into(title);
-        title.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(videokey.size()>0){
-                    String video_path = "https://www.youtube.com/watch?v="+videokey.get(0);
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(video_path));
-                    startActivity(intent);}
-            }
-        });
-        year.setText(movie.getReleaseDate());
+        year.setText(mRelease_Date);
 //        average.setText(mVote);
-        moTitle.setText(movie.getTitle());
-        synopsis.setText(movie.getOverview());
-        d=Double.parseDouble(movie.getRating());
-        average.setText(movie.getRating());
-        vote_count.setText(movie.getVoteCount());
-        mLang.setText(movie.getLang());
-        DecimalFormat df2 = new DecimalFormat(".##");
-        d=Double.parseDouble(movie.getPopularity());
-        d=Math.round(d*100.00)/100.00;
-        String value= String.valueOf(d);
-        mPop.setText(value);
-        //id.setText(mId);
-       // getSupportActionBar().setTitle(movie.getTitle());
+        moTitle.setText(mTitle);
+        synopsis.setText(mOverview);
+        d=Double.parseDouble(mVote);
         rate=(float)d;
-
+        tvote.setText(String.valueOf(rate));
+        if(mlanguage==null)
+            tlanguage.setText("na");
+        else
+            tlanguage.setText(mlanguage);
+        if(mpopularity==0)
+            tpopularity.setText("NA");
+        else
+            tpopularity.setText(String.valueOf(mpopularity));
         fetchgenre();
         //r.setRating(rate / 2);
 
@@ -213,7 +176,14 @@ public class Tab_description extends Fragment {
 //
 //            }
 //        });
-
+        ib.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String video_path = "https://www.youtube.com/watch?v="+videokey.get(0);
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(video_path));
+                startActivity(intent);
+            }
+        });
 
         share.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -267,9 +237,8 @@ public class Tab_description extends Fragment {
         realm.beginTransaction();
         // Movies_Fav m=realm.createObject(Movies_Fav.class);
         //a=m.getMovies_id();
-        m=realm.createObject(FavMovies.class);
-        //RealmResults<Movies_Fav> result3 = realm.where(Movies_Fav.class).equalTo("id", mId).findAll();
-        RealmResults<FavMovies> result3 = realm.where(FavMovies.class).equalTo("id", mId).findAll();
+        m=realm.createObject(Fav_Movies.class);
+        RealmResults<Fav_Movies> result3 = realm.where(Fav_Movies.class).equalTo("id", mId).findAll();
         if(result3.size()!=0)
             mf=result3.first().getObject();
         else
@@ -295,27 +264,19 @@ public class Tab_description extends Fragment {
     {
         realm.beginTransaction();
         // Movies_Fav m=realm.createObject(Movies_Fav.class);
-        mf=realm.createObject(FavMovies.class);
+        mf=realm.createObject(Fav_Movies.class);
         mf.setFav(1);
-        mf.setId(movie.getId());
+        mf.setId(mId);
         mf.setObject(mf);
-        mf.setBackdropImg(movie.getBackdropImg());
-        mf.setOverview(movie.getOverview());
-        mf.setPosterImg(movie.getImgMain());
-        mf.setRelease_date(movie.getReleaseDate());
-        mf.setTitle(movie.getTitle());
-        mf.setVote_average(movie.getVoteCount());
-        //mf.setId(mId);
-        //mf.setObject(mf);
-        //mf.setBackdropImg(mBackdrop_Image);
-//        mf.setOverview(mOverview);
-//        mf.setPosterImg(mPoster_Image);
-//        mf.setRelease_date(mRelease_Date);
-//        mf.setTitle(mTitle);
-//        mf.setVote_average(mVote);
-//        mf.setGenre(mgenre);
-//        mf.setLanguage(mlanguage);
-//        mf.setPopularity(mpopularity);
+        mf.setBackdropImg(mBackdrop_Image);
+        mf.setOverview(mOverview);
+        mf.setPosterImg(mPoster_Image);
+        mf.setRelease_date(mRelease_Date);
+        mf.setTitle(mTitle);
+        mf.setVote_average(mVote);
+        mf.setGenre(mgenre);
+        mf.setLanguage(mlanguage);
+        mf.setPopularity(mpopularity);
         share.setImageDrawable(ContextCompat.getDrawable(getActivity(),android.R.drawable.btn_star_big_on));
         realm.commitTransaction();
         // new Favourite().fetchsData();
@@ -328,14 +289,12 @@ public class Tab_description extends Fragment {
 
         share.setImageDrawable(ContextCompat.getDrawable(getActivity(),android.R.drawable.btn_star_big_off));
 
-        //RealmResults<Movies_Fav> result2 = realm.where(Movies_Fav.class).findAll();
-        RealmResults<FavMovies> result2 = realm.where(FavMovies.class).findAll();
-        mf.deleteFromRealm();
+        RealmResults<Fav_Movies> result2 = realm.where(Fav_Movies.class).findAll();
         mf.deleteFromRealm();
         //result2.deleteAllFromRealm();
         realm.commitTransaction();
         realm.beginTransaction();
-        mf=realm.createObject(FavMovies.class);
+        mf=realm.createObject(Fav_Movies.class);
         realm.commitTransaction();
 //        new Favourite().fetchsData();
 
@@ -345,7 +304,7 @@ public class Tab_description extends Fragment {
     public void fetchReview()
     {
         String url = "https://api.themoviedb.org/3/movie/"+mId+"/reviews?api_key="+API_KEY;
-
+        startAnim2();
 
         JsonObjectRequest jsonRequest = new JsonObjectRequest
                 (Request.Method.GET, url, (String) null, new Response.Listener<JSONObject>() {
@@ -362,7 +321,7 @@ public class Tab_description extends Fragment {
                                 reviewAuthor.add(jsonObject.getString("author"));
                             }
                             if(reviewAuthor.size()!=0 && reviewText.size()!=0) {
-
+                                stopAnim2();
                                 mAuthor.setText(reviewAuthor.get(0));
                                 mText.setText(reviewText.get(0));
                             }
@@ -389,7 +348,7 @@ public class Tab_description extends Fragment {
     public void fetchTrailer()
     {
         String url = "https://api.themoviedb.org/3/movie/"+mId+"/videos?api_key="+API_KEY;
-
+        startAnim();
 
         JsonObjectRequest jsonRequest = new JsonObjectRequest
                 (Request.Method.GET, url, (String) null, new Response.Listener<JSONObject>() {
@@ -413,11 +372,14 @@ public class Tab_description extends Fragment {
                                 thumb_img.add(url2);
                             }
                             if(thumb_img.size()!=0 && trailerInfo.size()!=0) {
-
+                                stopAnim();
                                 mAdapter = new MyAdapter3(thumb_img, trailerInfo);
                                 mRecyclerView.setAdapter(mAdapter);
                             }
-
+                            else
+                            {
+                                ib.setVisibility(View.GONE);
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Toast.makeText(getActivity(), "Something went wrong!!please check your connection 111", Toast.LENGTH_SHORT).show();
@@ -481,20 +443,19 @@ public class Tab_description extends Fragment {
         }
     }
 
-//    void startAnim(){
-//        view.findViewById(R.id.avloadingIndicatorView).setVisibility(View.VISIBLE);
-//    }
-//
-//    void stopAnim(){
-//        view.findViewById(R.id.avloadingIndicatorView).setVisibility(View.GONE);
-//    }
-//
-//    void startAnim2(){
-//        view.findViewById(R.id.avloadingIndicatorView2).setVisibility(View.VISIBLE);
-//    }
-//
-//    void stopAnim2(){
-//        view.findViewById(R.id.avloadingIndicatorView2).setVisibility(View.GONE);
-//    }
-}
+    void startAnim(){
+        view.findViewById(R.id.avloadingIndicatorView).setVisibility(View.VISIBLE);
+    }
 
+    void stopAnim(){
+        view.findViewById(R.id.avloadingIndicatorView).setVisibility(View.GONE);
+    }
+
+    void startAnim2(){
+        view.findViewById(R.id.avloadingIndicatorView2).setVisibility(View.VISIBLE);
+    }
+
+    void stopAnim2(){
+        view.findViewById(R.id.avloadingIndicatorView2).setVisibility(View.GONE);
+    }
+}
